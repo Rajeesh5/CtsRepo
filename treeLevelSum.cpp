@@ -69,7 +69,7 @@ void preorder(struct node *tmp)
 
 }
 
-
+/////
 
 int main()
 {
