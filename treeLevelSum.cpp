@@ -1,7 +1,7 @@
 #include<iostream>
 #include<stdio.h>
 #include<malloc.h>
-#define MAX_LEN 20
+#define MAX_LEN 50
 using namespace std;
 
 struct node
@@ -10,48 +10,72 @@ struct node
     struct node* left, *right;
 };
 
-
 struct queueNode
 {
-    struct node *treelist;
+    struct node **qArr;
     int rear,front;
-}Q;
+}*Q;
 
-void queueInitialize()
+struct queueNode * createQueue()
 {
-  Q.treelist=(struct node *)calloc(MAX_LEN,sizeof(struct node));
-  Q.rear=Q.front=-1;
+	Q=(queueNode*)calloc(1,sizeof(queueNode));
+	Q->qArr=(struct node**) calloc(MAX_LEN,sizeof( node *) );
+	Q->rear= -1;Q->front=-1;
+	return Q;
 }
-void distroyQ()
+
+void destroyQ()
 {
     for(int i=0;i<MAX_LEN;i++)
-        free( (void *) &Q.treelist[i]);
-}
+        free(Q->qArr[i]);
+	free(Q);
+} 
+
 int isQEmpty()
 {
-    if (Q.front==-1)return 1;
+    if (Q->front==-1)return 1;
     else return 0;
 }
+
 int isQFull()
 {
-    if((Q.rear+1)%MAX_LEN==Q.front) return 1;
+    if((Q->rear+1)%MAX_LEN==Q->front) return 1;
     else return 0;
 }
 
 void enqueue(struct node *tmp)
 {
-    if(isQFull()){cout<<"Cant Insert"; return; }
-    else
-    {
-        if(Q.rear==-1){Q.front=Q.rear=0;}
-        Q.treelist[Q.rear++] = tmp;
-
-    }
-
+	
+	if(isQFull())
+	{
+		cout<<"Q Full Can not Insert"<<endl;
+		return;
+	}
+	else
+	{
+		if(Q->rear==-1){Q->rear=0; Q->front=0;}
+		else Q->rear=(Q->rear+1)%MAX_LEN;
+		Q->qArr[Q->rear]=tmp;
+		
+	}
 }
 
-
-
+struct node *dequeue()
+{
+	struct node *tmp=new node();
+	if(isQEmpty())
+	{
+		cout<<"Q underflow Cannot delete"<<endl;
+		return 0;
+	}
+	else{
+		tmp=Q->qArr[Q->front];
+		if(Q->front==Q->rear){ Q->rear= -1; Q->front=-1;}
+		else Q->front=(Q->front+1)%MAX_LEN;
+	}
+			
+	return tmp;
+}
 
 struct node* newNode(int data)
 {
@@ -69,7 +93,36 @@ void preorder(struct node *tmp)
 
 }
 
-/////
+
+void levelSum(struct node *tree)
+{
+	int sum=0,level=0;
+	struct node * tmp= new node();
+	if(tree==NULL) return;
+	enqueue(tree);
+	enqueue(NULL);
+	while(!isQEmpty())
+	{		
+		tmp=dequeue();
+		if(tmp)
+		{
+			sum=sum+tmp->data;
+			if(tmp->left)enqueue(tmp->left);
+			if(tmp->right)enqueue(tmp->right);
+		}
+		else { cout << "Sum of Level "<< level<< " = "<<sum<<endl; sum=0;level++; 
+			if(!isQEmpty())
+				enqueue(NULL);
+			}
+		
+	}
+}
+
+
+
+
+
+
 
 int main()
 {
@@ -91,17 +144,22 @@ int main()
   root->left->right = newNode(50);
   root->left->right->left = newNode(70);
   root->left->right->right = newNode(90);
-  preorder(root);
-  queueInitialize();
+  
+		createQueue();
+    levelSum(root);
+	//enqueue(root);  
+	//struct node* tmp=dequeue();
+	//cout<<tmp->data;
+	
+	
+  
+  
+  
+  destroyQ();
 
-    for (int i=0;i<MAX_LEN;i++)
-        cout<<Q.treelist[i].data;
+  	
 
-
-
-
-    distroyQ();
-
+    
 
   return 0;
 }
