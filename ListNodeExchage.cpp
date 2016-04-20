@@ -44,6 +44,11 @@ void revList(struct node *nd)
 	tmp->next=nd;	
 }
 
+void revListIter(struct node *nd)
+{
+	
+}
+
 
 int main()
 {
