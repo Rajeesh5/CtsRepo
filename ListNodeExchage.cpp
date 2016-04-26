@@ -49,6 +49,41 @@ void revListIter(struct node *nd)
 	
 }
 
+void listDataExchange(struct node *nd)
+{
+    int tmp;
+    if(nd==NULL || nd->next==NULL){return;}
+
+    while(1)
+    {
+        //exchange(nd->data,nd->next->data);
+        tmp=nd->data;
+        nd->data=nd->next->data;
+        nd->next->data=tmp;
+        nd=nd->next->next;
+        if(nd==NULL || nd->next==NULL) break;
+
+    }
+}
+
+void listLinkExchange(struct node *nd)
+{
+    struct node *nodeNext;
+    if(nd==NULL || nd->next==NULL) return;
+    while(1)
+    {
+        nodeNext=nd->next->next;
+        nd->next->next=nd;
+
+        if(nd->next->next==head){head=nd->next;}
+
+        nd->next=nodeNext;
+        nd=nodeNext;
+        if(nodeNext==NULL || nodeNext->next==NULL)break;
+     }
+}
+
+
 
 int main()
 {
