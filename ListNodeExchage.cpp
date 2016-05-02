@@ -66,23 +66,17 @@ void listDataExchange(struct node *nd)
     }
 }
 
-void listLinkExchange(struct node *nd)
+struct node* listLinkExchange(struct node *NODE)
 {
-    struct node *nodeNext;
-    if(nd==NULL || nd->next==NULL) return;
-    while(1)
-    {
-        nodeNext=nd->next->next;
-        nd->next->next=nd;
-
-        if(nd->next->next==head){head=nd->next;}
-
-        nd->next=nodeNext;
-        nd=nodeNext;
-        if(nodeNext==NULL || nodeNext->next==NULL)break;
-     }
+	if(NODE==NULL || NODE->next==NULL){return NODE;}
+	struct node *tmp=NODE->next->next;
+	NODE->next->next=NODE;
+	//NODE->next=NULL;
+	struct node *nd=listLinkExchange(tmp);
+	struct node *nodeNext=NODE->next;
+	NODE->next=nd;
+	return nodeNext;
 }
-
 
 
 int main()
@@ -92,9 +86,13 @@ int main()
 	head->next->next=newNode(30);
 	head->next->next->next=newNode(40);
 	head->next->next->next->next=newNode(50);
+	head->next->next->next->next->next=newNode(60);
 	displayList(head);
 	
-	revList(head);
+	//revList(head);
+	head=listLinkExchange(head);
+	
+
 	displayList(head);
 	
 	return 0;
