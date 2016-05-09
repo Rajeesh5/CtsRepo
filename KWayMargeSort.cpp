@@ -21,23 +21,51 @@ void swapElement(int *a,int *b)
 int rPartition(int *arr,int p,int r)
 {
     int randIndex=rand()%r;
-    cout<<endl<<randIndex;
     swapElement(arr+randIndex,arr+r);
-    return 0;
+    int q=-1;
+    int pivot=arr[r];
+    while(p<r-1)
+    {
+        if(arr[p] < pivot)
+        {
+            q++;
+            swapElement(arr+p,arr+q);
+        }
+        p++;
+
+    }
+    q++;
+    swapElement(arr+q,arr+r);
+    arr[q]=pivot;
+    return q;
+
 }
 
 void randomizedQuickSort(int *arr,int p,int r)
 {
-    int q=rPartition(arr,p,r);
-    //randomizedQuickSort(arr,p,q-1);
-    //randomizedQuickSort(arr,q+1,r);
+    if(p<r)
+    {
+        int q=rPartition(arr,p,r);
+        randomizedQuickSort(arr,p,q-1);
+        randomizedQuickSort(arr,q+1,r);
+    }
 }
+
+
 
 
 
 int main()
 {
+
+    int arr[]={2,5,8,1,7,9,3,4};
+    randomizedQuickSort(arr,0,7);
+
+    /*
     FILE *fp=fopen("RandomFile.txt","r");
+    if(fp==NULL){printf("File Not Found"); return 1; }
+
+
     int *arr,i;
     time_t t;
     arr=(int*)calloc(sizeof(int),MAX_ARR_SIZE);
@@ -65,6 +93,6 @@ int main()
         printf("%d ",arr[i]);
 
     free(arr);
-
+    */
 
 }
