@@ -5,8 +5,7 @@
 #include<malloc.h>
 
 #define ELE_CNT 1000000
-//#define MAX_ARR_SIZE 1000
-#define MAX_ARR_SIZE 10
+#define MAX_ARR_SIZE 1000
 
 using namespace std;
 
@@ -21,12 +20,13 @@ void swapElement(int *a,int *b)
 int rPartition(int *arr,int p,int r)
 {
     int randIndex=rand()%r;
+    if(randIndex<p)randIndex+=p;
     swapElement(arr+randIndex,arr+r);
-    int q=-1;
-    int pivot=arr[r];
-    while(p<r-1)
+    int q=p-1;
+    int pivot=arr[randIndex];
+    while(p<r)
     {
-        if(arr[p] < pivot)
+        if(arr[p] <= pivot)
         {
             q++;
             swapElement(arr+p,arr+q);
@@ -52,16 +52,17 @@ void randomizedQuickSort(int *arr,int p,int r)
 }
 
 
+void printArr(int *arr,int n)
+{
+        for(int i=0;i<n;i++)
+        printf("%d ",arr[i]);
 
+}
 
 
 int main()
 {
 
-    int arr[]={2,5,8,1,7,9,3,4};
-    randomizedQuickSort(arr,0,7);
-
-    /*
     FILE *fp=fopen("RandomFile.txt","r");
     if(fp==NULL){printf("File Not Found"); return 1; }
 
@@ -92,7 +93,9 @@ int main()
     for(i=0;i<MAX_ARR_SIZE;i++)
         printf("%d ",arr[i]);
 
-    free(arr);
-    */
+    free((void*)arr);
+    arr=NULL;
+
+
 
 }
