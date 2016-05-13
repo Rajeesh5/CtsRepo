@@ -1,71 +1,28 @@
-// C++ program to merge k sorted arrays of size n each.
+
 #include<iostream>
+#include<malloc.h>
 #include<limits.h>
+#define n 7
+#define MAX_CAPACITY 100
+
 using namespace std;
- 
-#define n 4
- 
-// A min heap node
+
+
 struct MinHeapNode
 {
-    int element; // The element to be stored
-    int i; // index of the array from which the element is taken
-    int j; // index of the next element to be picked from array
+    int element;
+    int listNo;
+    int listIndex;
 };
- 
-// Prototype of a utility function to swap two min heap nodes
-void swap(MinHeapNode *x, MinHeapNode *y);
- 
-class MinHeap
-{
-    MinHeapNode *harr; 
-    int heap_size; 
-public:
-    
-    MinHeap(MinHeapNode a[], int size);
-    void MinHeapify(int );
-    int left(int i) { return (2*i + 1); }
-    int right(int i) { return (2*i + 2); }
-    MinHeapNode getMin() { return harr[0]; }
-    void replaceMin(MinHeapNode x) { harr[0] = x;  MinHeapify(0); }
-};
- 
 
- int *mergeKArrays(int arr[][n], int k)
-{
-    int *output = new int[n*k];  // To store output array
+/*
 
-    MinHeapNode *harr = new MinHeapNode[k];
-    for (int i = 0; i < k; i++)
-    {
-        harr[i].element = arr[i][0]; // Store the first element
-        harr[i].i = i;  // index of array
-        harr[i].j = 1;  // Index of next element to be stored from array
-    }
-    MinHeap hp(harr, k); // Create the heap
- 
 
-    for (int count = 0; count < n*k; count++)
-    {
-        MinHeapNode root = hp.getMin();
-        output[count] = root.element;
- 
-        // Find the next element that will replace current root of heap. The next element belongs to same array as the current root.
-        if (root.j < n)
-        {
-            root.element = arr[root.i][root.j];
-            root.j += 1;
-        }
-        // If root was the last element of its array
-        else root.element =  INT_MAX; //INT_MAX is for infinite
- 
-        // Replace root with next element of array
-        hp.replaceMin(root);
-    }
- 
-    return output;
-}
- 
+
+
+
+
+
 
 MinHeap::MinHeap(MinHeapNode a[], int size)
 {
@@ -78,7 +35,7 @@ MinHeap::MinHeap(MinHeapNode a[], int size)
         i--;
     }
 }
- 
+
 void MinHeap::MinHeapify(int i)
 {
     int l = left(i);
@@ -94,32 +51,143 @@ void MinHeap::MinHeapify(int i)
         MinHeapify(smallest);
     }
 }
- 
+
 void swap(MinHeapNode *x, MinHeapNode *y)
 {
     MinHeapNode temp = *x;  *x = *y;  *y = temp;
 }
- 
+
+
+
+
+
+*/
+
 void printArray(int arr[], int size)
 {
    for (int i=0; i < size; i++)
+   {
        cout << arr[i] << " ";
+	   //if((i+1)%n==0)cout<<"\n";
+   }
 }
- 
-// Driver program to test above functions
+
+
+class MinHeap
+{
+    MinHeapNode *harr;
+    int heapSize;
+	int capacity;
+public:
+
+    MinHeap();
+    void minHeapify(int );
+	void insertIntoHeap(int);
+	void printHeap();
+    int getLeftIndex(int i)  { if(2*i + 1 > heapSize) return -1; else return (2*i + 1); }
+    int getRightIndex(int i) { if(2*i + 2 > heapSize) return -1; else return (2*i + 2); }
+	int getParentIndex(int i){ if(i<=0 || i >= heapSize)return -1; else return (i-1)/2; }
+    MinHeapNode getMin() { return harr[0]; }
+    //void replaceMin(MinHeapNode x) { harr[0] = x;  MinHeapify(0); }
+};
+
+void MinHeap::printHeap()
+{
+	for(int i=0;i<heapSize;i++)
+		cout<<harr[i].element<<" ";
+	cout<<endl;
+}
+void swap(MinHeapNode *x, MinHeapNode *y)
+{
+
+
+}
+
+MinHeap::MinHeap()
+{
+	harr=(MinHeapNode*)calloc(sizeof(MinHeapNode),MAX_CAPACITY);
+	for(int i=0;i<MAX_CAPACITY;i++)
+	{
+		harr->listIndex=0;
+		harr->listNo=-1;
+	}
+	capacity=MAX_CAPACITY;
+	heapSize=0;
+}
+
+void MinHeap::insertIntoHeap(int data)
+{
+	int p;
+	if(heapSize+1 >= MAX_CAPACITY)
+	{
+		cout<<"HEAP IS FULL , Cant Insert more element\n";
+		return ;
+	}
+	harr[heapSize++].element=data;
+	p=getParentIndex(heapSize-1);
+	if(p<0)return;
+	for(int i=heapSize-1;i >=0 && harr[p].element >= data ;i=((i-1)/2))
+	{
+		int tmp=harr[p].element;
+		harr[p].element=harr[i].element;
+		harr[i].element=tmp;
+
+		p=getParentIndex(p);
+	}
+	
+}
+
+/*
+
+int * mergeKArrays(int **arr, int k)
+{
+	int i;
+	MinHeap *mHeap=new MinHeap();
+	for(i=0;i<k;i++)
+		insertIntoHeap(arr[1][i]);
+
+	while(mHeap->heapSize>0)
+	{
+
+	}
+
+}
+*/
+
+
+
+
+
+
+
+
 int main()
 {
-    // Change n at the top to change number of elements
-    // in an array
-    int arr[][n] =  {{2, 6, 12, 34},
-                     {1, 9, 20, 1000},
-                     {23, 34, 90, 2000}};
+
+    int arr[][n] = {{ 1,3,3,7,9,10,13},
+					{2,3,4,7,7,9,10},
+					{5,6,7,9,10,11,14},
+					{9,11,13,14,16,20,22}};
+
+
     int k = sizeof(arr)/sizeof(arr[0]);
- 
-    int *output = mergeKArrays(arr, k);
- 
-    cout << "Merged array is " << endl;
-    printArray(output, n*k);
- 
+ 	printArray(arr[0],n*k);
+
+	MinHeap *mHeap=new MinHeap();
+
+	for (int i=0; i < k; i++)
+	{
+		for(int j=0; j < n ; j++)
+		mHeap->insertIntoHeap(arr[i][j]);
+	}
+
+	cout<<endl;
+	mHeap->printHeap();
+	
+	
+    //int *output = mergeKArrays(arr, k);
+    //cout << "Merged array is " << endl;
+    //printArray(output, n*k);
+
     return 0;
 }
