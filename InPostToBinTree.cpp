@@ -24,13 +24,20 @@ void preOrder(Node* node)
     preOrder(node->right);
 }
  
-int findRootIndex(int arr[],int val,int low,int high)
+int findRootIndex(int inArr[],int postArr[],int val,int low,int high)
 {
-	int i;
+	int i,j;
 	for( i=low;i<=high;i++)
 	{
-		if(arr[i]==val){break;}
+		if(inArr[i]==val){break;}
 	}
+	
+	for(j=high-1;j>=i;j--)
+	{
+		postArr[j+1]=postArr[j];
+		
+	}
+	postArr[j+1]=val;	
 	return i;
 } 
  
@@ -40,16 +47,11 @@ struct Node * buildTree(int inOrder[],int postOrder[],int low,int high)
 	if(low>high){return NULL;}
 	if(low==high){return newNode(postOrder[high]);}
 	struct Node *root= newNode(postOrder[high]);
-	int mid=findRootIndex(inOrder,postOrder[high],low,high);
+	int mid=findRootIndex(inOrder,postOrder,postOrder[high],low,high);
 	root->left=buildTree(inOrder,postOrder,low,mid-1);
 	root->right=buildTree(inOrder,postOrder,mid+1,high);
 	return root;
 }
-
-
-
-
-
 
 int main()
 {
