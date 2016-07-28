@@ -63,7 +63,7 @@ void printArr(int *arr,int n)
 int main()
 {
 
-    FILE *fp=fopen("RandomFile.txt","r");
+    FILE *fp=fopen("RandomFile.txt.txt","r");
     if(fp==NULL){printf("File Not Found"); return 1; }
 
 
@@ -83,8 +83,8 @@ int main()
         fscanf(fp,"%d",&arr[i]);
     fclose(fp);
 
-    for(i=0;i<MAX_ARR_SIZE;i++)
-        printf("%d ",arr[i]);
+   // for(i=0;i<MAX_ARR_SIZE;i++)
+     //   printf("%d ",arr[i]);
 
     randomizedQuickSort(arr,0,MAX_ARR_SIZE-1);
 

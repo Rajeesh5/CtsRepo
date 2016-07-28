@@ -21,11 +21,13 @@ int main()
 	//char str[]= "ABCD";
 	int len=strlen(str);
 	int i,j;
+
 	for(i=0;i<len;i++)
         for(j=0;j<len;j=j+1)
+        {
             if(j>=i && j-i > 0)
                 printStr(str,i,j);
-
+        }
 
 	return 0;
 }

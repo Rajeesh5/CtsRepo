@@ -62,12 +62,13 @@ void bubbleSort(int arr[], int n)
 int main()
 {
 	int arr[]={51,78,8,1,96,67,4,5,78,45,7,34,38,50};
+	int arr1[]={51,78,8,1,96,67,4,5,78,45,7,34,38,50};
 	//int arr[]={3,2,6,7,1,5};
-	//bubbleSort(arr,N);
-	printArr(arr);
+	bubbleSort(arr1,N);
+	//printArr(arr1);
 	 
 
-	int k=3;
+	int k=11;k--;
 	int q=partition(arr,0,N-1);
 	while(q!=k)
 	{

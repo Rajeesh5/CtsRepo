@@ -3,11 +3,8 @@
 using namespace std;
 struct tnode
 {
-	tnode* lchild;
-	int data;
-	tnode* rchild;
-	int *aptr;
-	int ind;
+	tnode *lchild,*rchild;
+	int data,*aptr,ind;
 	tnode()
 	{
 		lchild=NULL;
@@ -48,6 +45,7 @@ tnode* create(tnode* root,int *s1,int *s2,int *s3,int level,int &cnt)
 	root->rchild=create(root->rchild,s1,s2,s3,level-1,cnt);
 	return root;
 }
+
 void fun(tnode* root,int level,int n)
 {
 	if(level==0)
@@ -67,6 +65,7 @@ void fun(tnode* root,int level,int n)
 	fun(root->rchild,level-1,n);
 	root->data=min(root->lchild->data,root->rchild->data);
 }
+
 void display(tnode* root)
 {
 	if(root)
@@ -76,6 +75,7 @@ void display(tnode* root)
 		display(root->rchild);
 	}
 }
+
 void get_roottoleaf(tnode* root,int k,int level)
 {
 	if(level==0)
@@ -91,6 +91,7 @@ void get_roottoleaf(tnode* root,int k,int level)
 	get_roottoleaf(root->lchild,k,level-1);
 	get_roottoleaf(root->rchild,k,level-1);
 }
+
 int main()
 {
 	tnode* root=NULL;

@@ -11,6 +11,18 @@ struct node
     struct node* left, *right;
 };
 
+
+struct node* newNode(int data)
+{
+  struct node* node = (struct node*)
+                       malloc(sizeof(struct node));
+  node->data = data;
+  node->left = NULL;
+  node->right = NULL;
+ 
+  return(node);
+}
+
 struct stkNode
 {
     struct node **stkArr;
@@ -20,7 +32,7 @@ struct stkNode
 void createStack()
 {
 	stk=(struct stkNode *)calloc(1,sizeof(stkNode));
-	stk->stkArr=(struct node *)calloc(MAX_LEN,sizeof(struct node*));
+	stk->stkArr=(struct node **)calloc(MAX_LEN,sizeof(struct node*));
 		stk->top=-1;
 }
 
@@ -35,10 +47,11 @@ void push(struct node *tmp)
 		stk->stkArr[stk->top]=tmp;
 	}	
 }
+
 struct node *pop()
 {
 	struct node *tmp;
-	if(stk->top==-1)return;
+	if(stk->top==-1)return NULL;
 	else {
 		tmp=stk->stkArr[stk->top];
 		stk->top--;
@@ -51,18 +64,17 @@ struct node *pop()
 
 void preOrder(struct node *tree)
 {
+	struct node *tmp;
 	if(tree==NULL)return;
 	else{
-		cout<<tree->data<<" ";
-		if(tree->right)push(tree->right);
-		if(tree->left)push(tree->left);
+		push(tree);
 		while(1)
 		{
-			struct *node tmp=pop();
+			tmp=pop();
+			if(tmp)	cout<<tmp->data<<" ";
 			if(tmp==NULL)break;
-			cout<<tree->data<<" ";
-			if(tree->right)push(tree->right);
-			if(tree->left)push(tree->left);
+			if(tmp->right)push(tmp->right);
+			if(tmp->left)push(tmp->left);
 			
 		}
 	}
@@ -78,19 +90,16 @@ int main()
             10
           /   \
         20      30
-      /  \     / \
-    N     50  11  22
-	     /  \
-        70   90
-  */
+         \     / \
+          50  11  22
+	*/
   struct node *root = newNode(10);
   root->left        = newNode(20);
   root->right       = newNode(30);
   root->right->left= newNode(11);
   root->right->right= newNode(22);
   root->left->right = newNode(50);
-  root->left->right->left = newNode(70);
-  root->left->right->right = newNode(90);
+  createStack();
   
   preOrder(root);
 
